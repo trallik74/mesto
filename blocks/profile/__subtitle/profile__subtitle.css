@@ -1,4 +1,7 @@
 .profile__subtitle {
   margin: 16px 0 0;
   font-size: 18px;
+  max-width: 336px;
+  width: 100%;
+  hyphens: auto;
 }

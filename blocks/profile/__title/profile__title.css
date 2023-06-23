@@ -3,4 +3,6 @@ margin: 0 18px 0 0;
 font-size: 42px;
 font-weight: 500;
 line-height: 48px;
+max-width: 294px;
+hyphens: auto;
 }
