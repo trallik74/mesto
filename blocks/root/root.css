@@ -1,0 +1,9 @@
+:root {
+    --color-black: #000;
+    --color-grey: #545454;
+    --color-white: #fff;
+
+    --bg-color: var(--color-black);
+    --text-color: var(--color-white);
+    --card-heading-color: var(--color-black);
+}
