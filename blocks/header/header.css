@@ -5,3 +5,16 @@
   padding-bottom: 40px;
   border-bottom: 1px solid var(--color-grey);
 }
+
+@media (max-width: 900px){
+  .header {
+    max-width: 585px;
+  }
+}
+
+@media (max-width: 600px){
+  .header {
+    padding-bottom: 31px;
+    margin: 28px 0 42px;
+  }
+}

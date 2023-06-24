@@ -3,6 +3,7 @@
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: 50% 50%;
+
     padding: 0;
     border: 2px solid var(--color-white);
     outline: none;
@@ -12,3 +13,12 @@
     box-sizing: border-box;
     margin-left: auto;
 }
+
+@media (max-width: 900px){
+  .profile__add-button {
+    margin: 36px 0 0 0;
+    background-size: 16px;
+    width: 282px;
+  }
+}
+

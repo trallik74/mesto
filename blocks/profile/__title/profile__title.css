@@ -6,3 +6,20 @@ line-height: 48px;
 max-width: 294px;
 hyphens: auto;
 }
+
+@media (max-width: 900px){
+  .profile__title {
+    text-align: center;
+  }
+}
+
+
+@media (max-width: 450px){
+  .profile__title {
+    max-width: 189px;
+    font-size: 27px;
+    margin: 0 10px 0 0;
+    line-height: 1;
+    padding-left: 25px;
+  }
+}

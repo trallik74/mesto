@@ -6,3 +6,16 @@
   gap: 20px 17px;
 }
 
+@media (max-width: 900px){
+  .elements {
+    max-width: 585px;
+  }
+}
+
+@media (max-width: 600px){
+  .elements {
+    max-width: 285px;
+    margin: 0 auto 48px;
+    gap: 18px;
+  }
+}
