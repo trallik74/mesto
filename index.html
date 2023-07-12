@@ -70,15 +70,27 @@
       <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
     </footer>
   </div>
-  
+
   <div class="popup popup_type_edit" >
     <div class="popup__container">
       <button class="popup__button popup__button_type_close" type="button" aria-label="Кнопка закрытия попапа"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form" name="edit-form">
-        <input class="popup__input popup__input_type_title" type="text" value="" name="title-input">
-        <input class="popup__input popup__input_type_subtitle" type="text" value="" name="subtitle-input">
+        <input class="popup__input popup__input_type_title" type="text" value="" name="edit-title-input">
+        <input class="popup__input popup__input_type_subtitle" type="text" value="" name="edit-subtitle-input">
         <button class="popup__button popup__button_type_submit" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup popup_type_add">
+    <div class="popup__container">
+      <button class="popup__button popup__button_type_close" type="button" aria-label="Кнопка закрытия попапа"></button>
+      <h2 class="popup__title">Новое место</h2>
+      <form class="popup__form" name="add-form">
+        <input class="popup__input popup__input_type_title" type="text" placeholder="Название" name="add-title-input">
+        <input class="popup__input popup__input_type_url" type="text" placeholder="Ссылка на картинку" name="add-url-input">
+        <button class="popup__button popup__button_type_submit" type="submit">Создать</button>
       </form>
     </div>
   </div>

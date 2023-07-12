@@ -1,32 +1,53 @@
 const profileEditButton = document.querySelector('.profile__edit-button');
+const elementAddButton = document.querySelector('.profile__add-button');
 const profileTitle = document.querySelector('.profile__title');
 const profileSubtitle = document.querySelector('.profile__subtitle');
 const editPopup = document.querySelector('.popup_type_edit');
+const addPopup = document.querySelector('.popup_type_add');
+const buttonCloseAddPopup = addPopup.querySelector('.popup__button_type_close');
 const buttonCloseEditPopup = editPopup.querySelector('.popup__button_type_close');
-const formElement = editPopup.querySelector('.popup__form');
-const titleInput = formElement.querySelector('.popup__input_type_title');
-const subtitleInput = formElement.querySelector('.popup__input_type_subtitle');
+const addFormElement = addPopup.querySelector('.popup__form');
+const addTitleInput = addFormElement.querySelector('.popup__input_type_title');
+const addUrlInput = addFormElement.querySelector('.popup__input_type_url');
+const editFormElement = editPopup.querySelector('.popup__form');
+const editTitleInput = editFormElement.querySelector('.popup__input_type_title');
+const editSubtitleInput = editFormElement.querySelector('.popup__input_type_subtitle');
 const containerElement = document.querySelector('.elements');
 const templateElement = document.querySelector('#element-item-template').content;
 
 
-function openEditPopup() {
-  titleInput.value = profileTitle.textContent;
-  subtitleInput.value = profileSubtitle.textContent;
-  editPopup.classList.add('popup_opened');
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
 }
 
-function closeEditPopup() {
-  editPopup.classList.remove('popup_opened');
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
 }
 
-function handleFormSubmit (evt) {
+function handleEditFormSubmit (evt) {
   evt.preventDefault();
 
-  profileTitle.textContent =  titleInput.value;
-  profileSubtitle.textContent = subtitleInput.value;
+  profileTitle.textContent =  editTitleInput.value;
+  profileSubtitle.textContent = editSubtitleInput.value;
 
-  closeEditPopup();
+  closePopup(editPopup);
+}
+
+function handleAddFormSubmit (evt) {
+  evt.preventDefault();
+
+  const article = templateElement.querySelector('.element').cloneNode(true);
+  const image = article.querySelector('.element__image');
+  const title = article.querySelector('.element__title');
+
+  image.src = addUrlInput.value;
+  image.alt = addTitleInput.value;
+  title.textContent = addTitleInput.value;
+  containerElement.prepend(article);
+
+  closePopup(addPopup);
+  addUrlInput.value = null;
+  addTitleInput.value = null;
 }
 
 function renderElements(card) {
@@ -40,14 +61,16 @@ function renderElements(card) {
   containerElement.append(article);
 }
 
-initialCards.forEach((card) => {
-  renderElements(card)
-})
+initialCards.forEach((card) => renderElements(card));
 
-
-
-
-profileEditButton.addEventListener('click', openEditPopup);
-buttonCloseEditPopup.addEventListener('click', closeEditPopup);
-formElement.addEventListener('submit', handleFormSubmit);
+elementAddButton.addEventListener('click', () => openPopup(addPopup));
+buttonCloseAddPopup.addEventListener('click', () => closePopup(addPopup));
+buttonCloseEditPopup.addEventListener('click', () => closePopup(editPopup));
+editFormElement.addEventListener('submit', handleEditFormSubmit);
+addFormElement.addEventListener('submit', handleAddFormSubmit);
+profileEditButton.addEventListener('click', () => {
+  editTitleInput.value = profileTitle.textContent;
+  editSubtitleInput.value = profileSubtitle.textContent;
+  openPopup(editPopup)
+});
 
