@@ -16,6 +16,7 @@ const containerElement = document.querySelector('.elements');
 const templateElement = document.querySelector('#element-item-template').content;
 
 
+
 function openPopup(popup) {
   popup.classList.add('popup_opened');
 }
@@ -33,6 +34,13 @@ function handleEditFormSubmit (evt) {
   closePopup(editPopup);
 }
 
+function toggleLike (container) {
+  container.querySelector('.element__like-button').addEventListener('click', function (evt) {
+    const eventTarget = evt.target;
+    eventTarget.classList.toggle('element__like-button_active');
+  });
+}
+
 function handleAddFormSubmit (evt) {
   evt.preventDefault();
 
@@ -43,8 +51,9 @@ function handleAddFormSubmit (evt) {
   image.src = addUrlInput.value;
   image.alt = addTitleInput.value;
   title.textContent = addTitleInput.value;
-  containerElement.prepend(article);
+  toggleLike(article);
 
+  containerElement.prepend(article);
   closePopup(addPopup);
   addUrlInput.value = null;
   addTitleInput.value = null;
@@ -58,6 +67,8 @@ function renderElements(card) {
   image.src = card.link;
   image.alt = card.name;
   title.textContent = card.name;
+  toggleLike(article);
+
   containerElement.append(article);
 }
 
@@ -73,4 +84,6 @@ profileEditButton.addEventListener('click', () => {
   editSubtitleInput.value = profileSubtitle.textContent;
   openPopup(editPopup)
 });
+
+
 
