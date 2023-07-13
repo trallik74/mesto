@@ -15,8 +15,6 @@ const editSubtitleInput = editFormElement.querySelector('.popup__input_type_subt
 const containerElement = document.querySelector('.elements');
 const templateElement = document.querySelector('#element-item-template').content;
 
-
-
 function openPopup(popup) {
   popup.classList.add('popup_opened');
 }
@@ -41,6 +39,12 @@ function toggleLike (container) {
   });
 }
 
+function deleteElement (container) {
+  container.querySelector('.element__delete-button').addEventListener('click', () => {
+    container.remove()
+  })
+}
+
 function handleAddFormSubmit (evt) {
   evt.preventDefault();
 
@@ -52,6 +56,8 @@ function handleAddFormSubmit (evt) {
   image.alt = addTitleInput.value;
   title.textContent = addTitleInput.value;
   toggleLike(article);
+  deleteElement(article);
+
 
   containerElement.prepend(article);
   closePopup(addPopup);
@@ -68,6 +74,7 @@ function renderElements(card) {
   image.alt = card.name;
   title.textContent = card.name;
   toggleLike(article);
+  deleteElement(article);
 
   containerElement.append(article);
 }
