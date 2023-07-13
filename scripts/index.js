@@ -45,55 +45,49 @@ function toggleLike (container) {
 
 function openImg(image) {
   image.addEventListener('click', () => {
-  popupImage.src = image.src;
-  popupImage.alt = image.alt;
-  popupImageCaption.textContent = image.alt;
-    openPopup(imgPopup)
+    popupImage.src = image.src;
+    popupImage.alt = image.alt;
+    popupImageCaption.textContent = image.alt;
+    openPopup(imgPopup);
   })
 }
 
 function deleteElement (container) {
   container.querySelector('.element__delete-button').addEventListener('click', () => {
-    container.remove()
+    container.remove();
   })
 }
 
 function handleAddFormSubmit (evt) {
   evt.preventDefault();
 
-  const article = templateElement.querySelector('.element').cloneNode(true);
-  const image = article.querySelector('.element__image');
-  const title = article.querySelector('.element__title');
+  const item = renderElements();
+  item.querySelector('.element__image').src = addUrlInput.value;
+  item.querySelector('.element__image').alt = addTitleInput.value;
+  item.querySelector('.element__title').textContent = addTitleInput.value;
 
-  image.src = addUrlInput.value;
-  image.alt = addTitleInput.value;
-  title.textContent = addTitleInput.value;
-  toggleLike(article);
-  deleteElement(article);
-  openImg(image);
-
-  containerElement.prepend(article);
+  containerElement.prepend(item);
   closePopup(addPopup);
-  addUrlInput.value = null;
-  addTitleInput.value = null;
+  addFormElement.reset();
 }
 
-function renderElements(card) {
+function renderElements() {
   const article = templateElement.querySelector('.element').cloneNode(true);
   const image = article.querySelector('.element__image');
-  const title = article.querySelector('.element__title');
-
-  image.src = card.link;
-  image.alt = card.name;
-  title.textContent = card.name;
+  openImg(image);
   toggleLike(article);
   deleteElement(article);
-  openImg(image);
 
-  containerElement.append(article);
+  return article
 }
 
-initialCards.forEach((card) => renderElements(card));
+initialCards.forEach((card) => {
+  const item = renderElements();
+  item.querySelector('.element__image').src = card.link;
+  item.querySelector('.element__image').alt = card.name;
+  item.querySelector('.element__title').textContent = card.name;
+  containerElement.append(item);
+});
 
 elementAddButton.addEventListener('click', () => openPopup(addPopup));
 buttonCloseAddPopup.addEventListener('click', () => closePopup(addPopup));
