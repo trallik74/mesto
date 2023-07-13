@@ -31,3 +31,7 @@
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/element/__like-button/_active/element__like-button_active.css);
 @import url(../blocks/element/__delete-button/element__delete-button.css);
+@import url(../blocks/popup/__image/popup__image.css);
+@import url(../blocks/popup/__wrapper/popup__wrapper.css);
+@import url(../blocks/popup/__image-capton/popup__image-caption.css);
+@import url(../blocks/popup/__figure/poup__figure.css);

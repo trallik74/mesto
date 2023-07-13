@@ -4,6 +4,8 @@ const profileTitle = document.querySelector('.profile__title');
 const profileSubtitle = document.querySelector('.profile__subtitle');
 const editPopup = document.querySelector('.popup_type_edit');
 const addPopup = document.querySelector('.popup_type_add');
+const imgPopup = document.querySelector('.popup_type_image');
+const buttonCloseImgPopup = imgPopup.querySelector('.popup__button_type_close');
 const buttonCloseAddPopup = addPopup.querySelector('.popup__button_type_close');
 const buttonCloseEditPopup = editPopup.querySelector('.popup__button_type_close');
 const addFormElement = addPopup.querySelector('.popup__form');
@@ -12,6 +14,8 @@ const addUrlInput = addFormElement.querySelector('.popup__input_type_url');
 const editFormElement = editPopup.querySelector('.popup__form');
 const editTitleInput = editFormElement.querySelector('.popup__input_type_title');
 const editSubtitleInput = editFormElement.querySelector('.popup__input_type_subtitle');
+const popupImage = imgPopup.querySelector('.popup__image');
+const popupImageCaption = imgPopup.querySelector('.popup__image-caption');
 const containerElement = document.querySelector('.elements');
 const templateElement = document.querySelector('#element-item-template').content;
 
@@ -39,6 +43,15 @@ function toggleLike (container) {
   });
 }
 
+function openImg(image) {
+  image.addEventListener('click', () => {
+  popupImage.src = image.src;
+  popupImage.alt = image.alt;
+  popupImageCaption.textContent = image.alt;
+    openPopup(imgPopup)
+  })
+}
+
 function deleteElement (container) {
   container.querySelector('.element__delete-button').addEventListener('click', () => {
     container.remove()
@@ -57,7 +70,7 @@ function handleAddFormSubmit (evt) {
   title.textContent = addTitleInput.value;
   toggleLike(article);
   deleteElement(article);
-
+  openImg(image);
 
   containerElement.prepend(article);
   closePopup(addPopup);
@@ -75,6 +88,7 @@ function renderElements(card) {
   title.textContent = card.name;
   toggleLike(article);
   deleteElement(article);
+  openImg(image);
 
   containerElement.append(article);
 }
@@ -84,6 +98,7 @@ initialCards.forEach((card) => renderElements(card));
 elementAddButton.addEventListener('click', () => openPopup(addPopup));
 buttonCloseAddPopup.addEventListener('click', () => closePopup(addPopup));
 buttonCloseEditPopup.addEventListener('click', () => closePopup(editPopup));
+buttonCloseImgPopup.addEventListener('click', () => closePopup(imgPopup));
 editFormElement.addEventListener('submit', handleEditFormSubmit);
 addFormElement.addEventListener('submit', handleAddFormSubmit);
 profileEditButton.addEventListener('click', () => {
