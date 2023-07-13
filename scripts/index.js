@@ -61,19 +61,19 @@ function deleteElement (container) {
 function handleAddFormSubmit (evt) {
   evt.preventDefault();
 
-  const item = renderElements();
-  item.querySelector('.element__image').src = addUrlInput.value;
-  item.querySelector('.element__image').alt = addTitleInput.value;
-  item.querySelector('.element__title').textContent = addTitleInput.value;
-
-  containerElement.prepend(item);
+  const element = renderElements(addUrlInput.value, addTitleInput.value);
+  containerElement.prepend(element);
   closePopup(addPopup);
   addFormElement.reset();
 }
 
-function renderElements() {
+function renderElements(link, name) {
   const article = templateElement.querySelector('.element').cloneNode(true);
   const image = article.querySelector('.element__image');
+  const title = article.querySelector('.element__title');
+  image.src = link;
+  image.alt = name;
+  title.textContent = name;
   openImg(image);
   toggleLike(article);
   deleteElement(article);
@@ -82,11 +82,8 @@ function renderElements() {
 }
 
 initialCards.forEach((card) => {
-  const item = renderElements();
-  item.querySelector('.element__image').src = card.link;
-  item.querySelector('.element__image').alt = card.name;
-  item.querySelector('.element__title').textContent = card.name;
-  containerElement.append(item);
+  const element = renderElements(card.link, card.name);
+  containerElement.append(element);
 });
 
 elementAddButton.addEventListener('click', () => openPopup(addPopup));
