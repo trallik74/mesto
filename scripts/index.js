@@ -18,13 +18,32 @@ const popupImage = imgPopup.querySelector('.popup__image');
 const popupImageCaption = imgPopup.querySelector('.popup__image-caption');
 const containerElement = document.querySelector('.elements');
 const templateElement = document.querySelector('#element-item-template').content;
+const popupsList = document.querySelectorAll('.popup')
+
+function setEscapeListener (evt) {
+  const popup = document.querySelector('.popup_opened');
+  if(evt.key === "Escape") closePopup(popup, valdationConfig);
+}
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', setEscapeListener);
+  enableValidation(valdationConfig);
 }
 
-function closePopup(popup) {
+function closePopup(popup, config) {
+  const openedPopup = document.querySelector('.popup_opened');
+  const form = openedPopup.querySelector(valdationConfig.formSelector);
+
+  if (form !== null) {
+    const inputs = Array.from(form?.querySelectorAll(config.inputSelector));
+    inputs.forEach(input => hideInputError(config, form, input));
+    form.reset();
+  }
+
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', setEscapeListener);
+
 }
 
 function handleEditFormSubmit (evt) {
@@ -33,7 +52,7 @@ function handleEditFormSubmit (evt) {
   profileTitle.textContent =  editTitleInput.value;
   profileSubtitle.textContent = editSubtitleInput.value;
 
-  closePopup(editPopup);
+  closePopup(editPopup, valdationConfig);
 }
 
 function toggleLike (container) {
@@ -63,7 +82,7 @@ function handleAddFormSubmit (evt) {
 
   const element = renderElements(addUrlInput.value, addTitleInput.value);
   containerElement.prepend(element);
-  closePopup(addPopup);
+  closePopup(addPopup, valdationConfig);
   addFormElement.reset();
 }
 
@@ -87,9 +106,9 @@ initialCards.forEach((card) => {
 });
 
 elementAddButton.addEventListener('click', () => openPopup(addPopup));
-buttonCloseAddPopup.addEventListener('click', () => closePopup(addPopup));
-buttonCloseEditPopup.addEventListener('click', () => closePopup(editPopup));
-buttonCloseImgPopup.addEventListener('click', () => closePopup(imgPopup));
+buttonCloseAddPopup.addEventListener('click', () => closePopup(addPopup, valdationConfig));
+buttonCloseEditPopup.addEventListener('click', () => closePopup(editPopup, valdationConfig));
+buttonCloseImgPopup.addEventListener('click', () => closePopup(imgPopup, valdationConfig));
 editFormElement.addEventListener('submit', handleEditFormSubmit);
 addFormElement.addEventListener('submit', handleAddFormSubmit);
 profileEditButton.addEventListener('click', () => {
@@ -97,6 +116,12 @@ profileEditButton.addEventListener('click', () => {
   editSubtitleInput.value = profileSubtitle.textContent;
   openPopup(editPopup)
 });
+
+popupsList.forEach( popup => {
+  popup.addEventListener('click', (evt) => {
+    if(evt.target.classList.contains('popup')) closePopup(evt.target, valdationConfig)
+  })
+  })
 
 
 
