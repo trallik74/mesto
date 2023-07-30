@@ -21,24 +21,28 @@ const templateElement = document.querySelector('#element-item-template').content
 const popupsList = document.querySelectorAll('.popup')
 
 function setEscapeListener (evt) {
-  const popup = document.querySelector('.popup_opened');
-  if(evt.key === "Escape") closePopup(popup, valdationConfig);
+  if(evt.key === "Escape") {
+    const popup = document.querySelector('.popup_opened');
+    closePopup(popup, validationConfig);
+  }
 }
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', setEscapeListener);
-  enableValidation(valdationConfig);
+
 }
 
 function closePopup(popup, config) {
-  const openedPopup = document.querySelector('.popup_opened');
-  const form = openedPopup.querySelector(valdationConfig.formSelector);
+  const form = popup.querySelector(config.formSelector);
 
   if (form !== null) {
-    const inputs = Array.from(form?.querySelectorAll(config.inputSelector));
+    const inputs = Array.from(form.querySelectorAll(config.inputSelector));
+    const button = form.querySelector(config.submitButtonSelector);
+
     inputs.forEach(input => hideInputError(config, form, input));
     form.reset();
+    disableButton(config, button);
   }
 
   popup.classList.remove('popup_opened');
@@ -52,17 +56,16 @@ function handleEditFormSubmit (evt) {
   profileTitle.textContent =  editTitleInput.value;
   profileSubtitle.textContent = editSubtitleInput.value;
 
-  closePopup(editPopup, valdationConfig);
+  closePopup(editPopup, validationConfig);
 }
 
-function toggleLike (container) {
+function initToggleLike (container) {
   container.querySelector('.element__like-button').addEventListener('click', function (evt) {
-    const eventTarget = evt.target;
-    eventTarget.classList.toggle('element__like-button_active');
+    evt.target.classList.toggle('element__like-button_active');
   });
 }
 
-function openImg(image) {
+function initOpenImage(image) {
   image.addEventListener('click', () => {
     popupImage.src = image.src;
     popupImage.alt = image.alt;
@@ -71,7 +74,7 @@ function openImg(image) {
   })
 }
 
-function deleteElement (container) {
+function initDeleteElement (container) {
   container.querySelector('.element__delete-button').addEventListener('click', () => {
     container.remove();
   })
@@ -80,35 +83,34 @@ function deleteElement (container) {
 function handleAddFormSubmit (evt) {
   evt.preventDefault();
 
-  const element = renderElements(addUrlInput.value, addTitleInput.value);
+  const element = createElement(addUrlInput.value, addTitleInput.value);
   containerElement.prepend(element);
-  closePopup(addPopup, valdationConfig);
-  addFormElement.reset();
+  closePopup(addPopup, validationConfig);
 }
 
-function renderElements(link, name) {
+function createElement(link, name) {
   const article = templateElement.querySelector('.element').cloneNode(true);
   const image = article.querySelector('.element__image');
   const title = article.querySelector('.element__title');
   image.src = link;
   image.alt = name;
   title.textContent = name;
-  openImg(image);
-  toggleLike(article);
-  deleteElement(article);
+  initOpenImage(image);
+  initToggleLike(article);
+  initDeleteElement(article);
 
   return article
 }
 
 initialCards.forEach((card) => {
-  const element = renderElements(card.link, card.name);
+  const element = createElement(card.link, card.name);
   containerElement.append(element);
 });
 
 elementAddButton.addEventListener('click', () => openPopup(addPopup));
-buttonCloseAddPopup.addEventListener('click', () => closePopup(addPopup, valdationConfig));
-buttonCloseEditPopup.addEventListener('click', () => closePopup(editPopup, valdationConfig));
-buttonCloseImgPopup.addEventListener('click', () => closePopup(imgPopup, valdationConfig));
+buttonCloseAddPopup.addEventListener('click', () => closePopup(addPopup, validationConfig));
+buttonCloseEditPopup.addEventListener('click', () => closePopup(editPopup, validationConfig));
+buttonCloseImgPopup.addEventListener('click', () => closePopup(imgPopup, validationConfig));
 editFormElement.addEventListener('submit', handleEditFormSubmit);
 addFormElement.addEventListener('submit', handleAddFormSubmit);
 profileEditButton.addEventListener('click', () => {
@@ -119,7 +121,7 @@ profileEditButton.addEventListener('click', () => {
 
 popupsList.forEach( popup => {
   popup.addEventListener('click', (evt) => {
-    if(evt.target.classList.contains('popup')) closePopup(evt.target, valdationConfig)
+    if(evt.target.classList.contains('popup')) closePopup(evt.target, validationConfig)
   })
   })
 

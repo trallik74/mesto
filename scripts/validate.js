@@ -1,12 +1,3 @@
-const valdationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_visible'
-}
-
 const enableValidation = (config) => {
   const forms = Array.from(document.querySelectorAll(config.formSelector));
 
@@ -41,13 +32,21 @@ const hasInvalidValue = (inputs) => {
   return inputs.some(input => !input.validity.valid);
 }
 
+const enableButton = (config, button) => {
+  button.classList.remove(config.inactiveButtonClass);
+  button.disabled = false;
+}
+
+const disableButton = (config, button) => {
+  button.classList.add(config.inactiveButtonClass);
+  button.disabled = true;
+}
+
 const toggleButtonState = (config, inputs, button) => {
   if (hasInvalidValue(inputs)) {
-    button.classList.add(config.inactiveButtonClass);
-    button.disabled = true;
+    disableButton(config, button);
   } else {
-    button.classList.remove(config.inactiveButtonClass);
-    button.disabled = false;
+    enableButton(config, button);
   }
 }
 
@@ -63,4 +62,6 @@ const setEventListeners = (config, form) => {
     });
   });
 }
+
+enableValidation(validationConfig);
 
