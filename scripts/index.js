@@ -1,7 +1,7 @@
 import {closePopup, openPopup} from "./utils.js";
 import Card from "./Card.js";
-import FormValidator from "./FormValidator.js";
-import {validationConfig, initialCards} from "./constants.js";
+import {enableValidation} from "./validate.js";
+import {initialCards} from "./constants.js";
 
 
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -22,13 +22,8 @@ const editTitleInput = editFormElement.querySelector('.popup__input_type_title')
 const editSubtitleInput = editFormElement.querySelector('.popup__input_type_subtitle');
 const containerElement = document.querySelector('.elements');
 const popupsList = document.querySelectorAll('.popup');
-const formsList = Array.from(document.querySelectorAll(validationConfig.formSelector));
-const validators = {};
 
-formsList.forEach(form => {
-  validators[form.getAttribute('name')] = new FormValidator(validationConfig, form);
-  validators[form.getAttribute('name')].enableValidation();
-});
+enableValidation();
 
 function handleEditFormSubmit (evt) {
   evt.preventDefault();
@@ -36,7 +31,7 @@ function handleEditFormSubmit (evt) {
   profileTitle.textContent =  editTitleInput.value;
   profileSubtitle.textContent = editSubtitleInput.value;
 
-  closePopup(editPopup, validators);
+  closePopup(editPopup);
 }
 
 function handleAddFormSubmit (evt) {
@@ -44,7 +39,7 @@ function handleAddFormSubmit (evt) {
 
   const element = new Card({link:addUrlInput.value, name:addTitleInput.value}, '#element-item-template');
   containerElement.prepend(element.createElement());
-  closePopup(addPopup, validators);
+  closePopup(addPopup);
 }
 
 initialCards.forEach((card) => {
@@ -53,9 +48,9 @@ initialCards.forEach((card) => {
 });
 
 elementAddButton.addEventListener('click', () => openPopup(addPopup));
-buttonCloseAddPopup.addEventListener('click', () => closePopup(addPopup, validators));
-buttonCloseEditPopup.addEventListener('click', () => closePopup(editPopup, validators));
-buttonCloseImgPopup.addEventListener('click', () => closePopup(imgPopup, validators));
+buttonCloseAddPopup.addEventListener('click', () => closePopup(addPopup));
+buttonCloseEditPopup.addEventListener('click', () => closePopup(editPopup));
+buttonCloseImgPopup.addEventListener('click', () => closePopup(imgPopup));
 editFormElement.addEventListener('submit', handleEditFormSubmit);
 addFormElement.addEventListener('submit', handleAddFormSubmit);
 profileEditButton.addEventListener('click', () => {
@@ -66,7 +61,7 @@ profileEditButton.addEventListener('click', () => {
 
 popupsList.forEach( popup => {
   popup.addEventListener('click', (evt) => {
-    if(evt.target.classList.contains('popup')) closePopup(evt.target, validators)
+    if(evt.target.classList.contains('popup')) closePopup(evt.target)
   })
 })
 
