@@ -8,6 +8,11 @@ class Card {
     this._imgPopup = document.querySelector('.popup_type_image');
     this._popupImage = this._imgPopup.querySelector('.popup__image');
     this._popupImageCaption = this._imgPopup.querySelector('.popup__image-caption');
+    this._article = this._getTemplate();
+    this._buttonLike = this._article.querySelector('.element__like-button');
+    this._buttonRemoveCard = this._article.querySelector('.element__delete-button');
+    this._image = this._article.querySelector('.element__image');
+    this._title = this._article.querySelector('.element__title');
   }
 
   _getTemplate() {
@@ -20,8 +25,8 @@ class Card {
     return cardElement;
   }
 
-  _initToggleLike(evt) {
-     evt.target.classList.toggle('element__like-button_active');
+  _initToggleLike() {
+    this._buttonLike.classList.toggle('element__like-button_active');
   }
 
   _initOpenImage() {
@@ -38,25 +43,21 @@ class Card {
 
   _setEventListeners() {
     this._article.addEventListener('click', (evt) => {
-      if (evt.target.classList.contains('element__like-button')) {
-         this._initToggleLike(evt);
+      if (evt.target === this._buttonLike) {
+        this._initToggleLike();
       }
 
-      if (evt.target.classList.contains('element__image')) {
+      if (evt.target === this._image) {
         this._initOpenImage();
       }
 
-      if (evt.target.classList.contains('element__delete-button')) {
+      if (evt.target === this._buttonRemoveCard) {
         this._initDeleteElement();
       }
     });
   }
 
   createElement() {
-    this._article = this._getTemplate();
-
-    this._image = this._article.querySelector('.element__image');
-    this._title = this._article.querySelector('.element__title');
     this._image.src = this._link;
     this._image.alt = this._name;
     this._title.textContent = this._name;

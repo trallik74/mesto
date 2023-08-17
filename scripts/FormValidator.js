@@ -62,7 +62,6 @@ class FormValidator {
 
   disableForm() {
     this._inputsList.forEach(input => this._hideInputError(input));
-    this._form.reset();
     this._disableButton();
   }
 

@@ -1,9 +1,7 @@
- import { validators } from "./validate.js";
-
- function setEscapeListener (evt) {
+function setEscapeListener (evt) {
   if(evt.key === "Escape") {
     const popup = document.querySelector('.popup_opened');
-    closePopup(popup, validators);
+    closePopup(popup);
   }
 }
 
@@ -13,12 +11,6 @@ export function openPopup(popup) {
 }
 
 export function closePopup(popup) {
-  const form = popup.querySelector('.popup__form');
-
-  if (form) {
-    validators[form.getAttribute('name')].disableForm();
-  }
-
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', setEscapeListener);
 }

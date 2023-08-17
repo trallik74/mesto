@@ -10,7 +10,6 @@ function enableValidation() {
     validators[form.getAttribute('name')] = new FormValidator(validationConfig, form);
     validators[form.getAttribute('name')].enableValidation();
   });
-
 }
 
 export {validators, enableValidation}
