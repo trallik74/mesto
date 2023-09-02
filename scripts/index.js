@@ -1,5 +1,6 @@
 import {closePopup, openPopup} from "./utils.js";
 import Card from "./Card.js";
+import Section from "./Section.js";
 import {enableValidation, validators} from "./validate.js";
 import {initialCards} from "./constants.js";
 
@@ -22,6 +23,9 @@ const editTitleInput = editFormElement.querySelector('.popup__input_type_title')
 const editSubtitleInput = editFormElement.querySelector('.popup__input_type_subtitle');
 const containerElement = document.querySelector('.elements');
 const popupsList = document.querySelectorAll('.popup');
+const sectionSelector = '.elements';
+const templateSelector = '#element-item-template';
+
 
 enableValidation();
 
@@ -34,20 +38,27 @@ function handleEditFormSubmit (evt) {
   closePopup(editPopup);
 }
 
-function getInstanceCard (data, templateSelector) {
-  const element = new Card(data, templateSelector);
+function getInstanceCard (data, selector) {
+  const element = new Card(data, selector);
   return element
 }
 
 function handleAddFormSubmit (evt) {
   evt.preventDefault();
-  containerElement.prepend(getInstanceCard({link:addUrlInput.value, name:addTitleInput.value}, '#element-item-template').createElement());
+  containerElement.prepend(getInstanceCard({link:addUrlInput.value, name:addTitleInput.value}, templateSelector).createElement());
   closePopup(addPopup);
 }
 
-initialCards.forEach((card) => {
-  containerElement.append(getInstanceCard(card, '#element-item-template').createElement());
-});
+const cardList = new Section({
+  items: initialCards,
+  renderer: (item) => {
+    const card = new Card(item, templateSelector);
+    const cardElement = card.createElement();
+    cardList.addItem(cardElement, 'append');
+  }
+}, sectionSelector);
+
+cardList.renderItems();
 
 elementAddButton.addEventListener('click', () => {
   validators[addFormElement.getAttribute('name')].disableForm();
