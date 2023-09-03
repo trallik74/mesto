@@ -1,4 +1,4 @@
-function setEscapeListener (evt) {
+ function setEscapeListener (evt) {
   if(evt.key === "Escape") {
     const popup = document.querySelector('.popup_opened');
     closePopup(popup);
