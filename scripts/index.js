@@ -1,13 +1,16 @@
 import Card from "./Card.js";
 import Section from "./Section.js";
 import Popup from "./Popup.js";
+import PopupWithImage from "./PopupWithImage.js";
 import {enableValidation, validators} from "./validate.js";
 import {initialCards} from "./constants.js";
 
 /* const buttonCloseImgPopup = imgPopup.querySelector('.popup__button_type_close');
 const buttonCloseAddPopup = addPopup.querySelector('.popup__button_type_close');
 const buttonCloseEditPopup = editPopup.querySelector('.popup__button_type_close');
-const popupsList = document.querySelectorAll('.popup'); */
+const popupsList = document.querySelectorAll('.popup');
+const imgPopup = document.querySelector('.popup_type_image');
+*/
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const elementAddButton = document.querySelector('.profile__add-button');
@@ -15,7 +18,6 @@ const profileTitle = document.querySelector('.profile__title');
 const profileSubtitle = document.querySelector('.profile__subtitle');
 const editPopup = document.querySelector('.popup_type_edit');
 const addPopup = document.querySelector('.popup_type_add');
-const imgPopup = document.querySelector('.popup_type_image');
 const addFormElement = addPopup.querySelector('.popup__form');
 const addTitleInput = addFormElement.querySelector('.popup__input_type_title');
 const addUrlInput = addFormElement.querySelector('.popup__input_type_url');
@@ -30,7 +32,8 @@ const templateSelector = '#element-item-template';
 enableValidation();
 const editPopupInstance = new Popup ('.popup_type_edit');
 const addPopupInstance = new Popup ('.popup_type_add');
-const imgPopupInstance = new Popup ('.popup_type_image');
+const imgPopupInstance = new PopupWithImage ('.popup_type_image');
+
 editPopupInstance.setEventListeners();
 addPopupInstance.setEventListeners();
 imgPopupInstance.setEventListeners();
@@ -44,14 +47,23 @@ function handleEditFormSubmit (evt) {
 
 function handleAddFormSubmit (evt) {
   evt.preventDefault();
-  containerElement.prepend(new Card({link:addUrlInput.value, name:addTitleInput.value}, templateSelector).createElement());
+  containerElement.prepend(new Card({link:addUrlInput.value, name:addTitleInput.value},
+    templateSelector,
+    (image) => {
+      imgPopupInstance.open(image)
+    })
+    .createElement());
   addPopupInstance.close();
 }
 
 const cardList = new Section({
   items: initialCards,
   renderer: (item) => {
-    const card = new Card(item, templateSelector);
+    const card = new Card(item,
+      templateSelector,
+      (image) => {
+        imgPopupInstance.open(image)
+      });
     const cardElement = card.createElement();
     cardList.addItem(cardElement, 'append');
   }
