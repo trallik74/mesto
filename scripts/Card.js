@@ -1,7 +1,5 @@
-import {openPopup} from "./utils.js";
-
-class Card {
-  constructor(data, templateSelector, handleCardClick){
+export default class Card {
+  constructor({data, handleCardClick}, templateSelector){
     this._templateSelector = templateSelector;
     this._link = data.link;
     this._name = data.name;
@@ -62,4 +60,3 @@ class Card {
   }
 }
 
-export default Card;
