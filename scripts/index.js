@@ -2,31 +2,19 @@ import Card from "./Card.js";
 import Section from "./Section.js";
 import PopupWithImage from "./PopupWithImage.js";
 import PopupWithForm from "./PopupWithForm.js";
+import UserInfo from "./UserInfo.js";
 import {enableValidation, validators} from "./validate.js";
-import {initialCards} from "./constants.js";
-
-/* const buttonCloseImgPopup = imgPopup.querySelector('.popup__button_type_close');
-const buttonCloseAddPopup = addPopup.querySelector('.popup__button_type_close');
-const buttonCloseEditPopup = editPopup.querySelector('.popup__button_type_close');
-const popupsList = document.querySelectorAll('.popup');
-const imgPopup = document.querySelector('.popup_type_image');
-const addTitleInput = addFormElement.querySelector('.popup__input_type_title');
-const addUrlInput = addFormElement.querySelector('.popup__input_type_url');
-const containerElement = document.querySelector('.elements');
-*/
-
-const profileEditButton = document.querySelector('.profile__edit-button');
-const elementAddButton = document.querySelector('.profile__add-button');
-const profileTitle = document.querySelector('.profile__title');
-const profileSubtitle = document.querySelector('.profile__subtitle');
-const editPopup = document.querySelector('.popup_type_edit');
-const addPopup = document.querySelector('.popup_type_add');
-const addFormElement = addPopup.querySelector('.popup__form');
-const editFormElement = editPopup.querySelector('.popup__form');
-const editTitleInput = editFormElement.querySelector('.popup__input_type_title');
-const editSubtitleInput = editFormElement.querySelector('.popup__input_type_subtitle');
-const sectionSelector = '.elements';
-const templateSelector = '#element-item-template';
+import {
+  initialCards,
+  profileEditButton,
+  elementAddButton,
+  addFormElement,
+  editFormElement,
+  editTitleInput,
+  editSubtitleInput,
+  sectionSelector,
+  templateSelector
+} from "./constants.js";
 
 const createCardInstance = ({link, name}) => {
   return new Card({
@@ -36,6 +24,11 @@ const createCardInstance = ({link, name}) => {
       }
     }, templateSelector);
 }
+
+const userInfoInstance = new UserInfo({
+  titleSelector: '.profile__title',
+  subtitleSelector: '.profile__subtitle'
+});
 
 const cardList = new Section({
   items: initialCards,
@@ -54,8 +47,10 @@ imgPopupInstance.setEventListeners();
 const editPopupInstance = new PopupWithForm ({
   popupSelector: '.popup_type_edit',
   handleFormSubmit: (inputValue) => {
-    profileTitle.textContent =  inputValue['edit-title-input'];
-    profileSubtitle.textContent = inputValue['edit-subtitle-input'];
+    userInfoInstance.setUserInfo(
+      inputValue['edit-title-input'],
+      inputValue['edit-subtitle-input']
+    );
   }
 });
 editPopupInstance.setEventListeners();
@@ -78,10 +73,12 @@ elementAddButton.addEventListener('click', () => {
   validators[addFormElement.getAttribute('name')].disableForm();
   addPopupInstance.open();
 });
+
 profileEditButton.addEventListener('click', () => {
   validators[editFormElement.getAttribute('name')].disableForm();
-  editTitleInput.value = profileTitle.textContent;
-  editSubtitleInput.value = profileSubtitle.textContent;
+  const {title, subtitle} = userInfoInstance.getUserInfo();
+  editTitleInput.value = title;
+  editSubtitleInput.value = subtitle;
   editPopupInstance.open();
 });
 
