@@ -1,10 +1,10 @@
 import './index.css';
-import Card from "../components/Card.js";
-import Section from "../components/Section.js";
-import PopupWithImage from "../components/PopupWithImage.js";
-import PopupWithForm from "../components/PopupWithForm.js";
-import UserInfo from "../components/UserInfo.js";
-import {enableValidation, validators} from "../components/validate.js";
+import Card from "../scripts/components/Card.js";
+import Section from "../scripts/components/Section.js";
+import PopupWithImage from "../scripts/components/PopupWithImage.js";
+import PopupWithForm from "../scripts/components/PopupWithForm.js";
+import UserInfo from "../scripts/components/UserInfo.js";
+import {enableValidation, validators} from "../scripts/utils/validate.js";
 import {
   initialCards,
   profileEditButton,
@@ -15,7 +15,7 @@ import {
   editSubtitleInput,
   sectionSelector,
   templateSelector
-} from "../components/constants.js";
+} from "../scripts/utils/constants.js";
 
 const createCardInstance = ({link, name}) => {
   return new Card({
@@ -23,7 +23,7 @@ const createCardInstance = ({link, name}) => {
     handleCardClick: (image) => {
       imgPopupInstance.open(image)
       }
-    }, templateSelector);
+    }, templateSelector).createElement();
 }
 
 const userInfoInstance = new UserInfo({
@@ -34,9 +34,7 @@ const userInfoInstance = new UserInfo({
 const cardList = new Section({
   items: initialCards,
   renderer: (item) => {
-    const card = createCardInstance(item)
-    const cardElement = card.createElement();
-    cardList.addItem(cardElement, 'append');
+    cardList.addItem(createCardInstance(item), 'append');
     }
   }, sectionSelector);
 cardList.renderItems();
@@ -47,10 +45,10 @@ imgPopupInstance.setEventListeners();
 
 const editPopupInstance = new PopupWithForm ({
   popupSelector: '.popup_type_edit',
-  handleFormSubmit: (inputValue) => {
+  handleFormSubmit: (inputValues) => {
     userInfoInstance.setUserInfo(
-      inputValue['edit-title-input'],
-      inputValue['edit-subtitle-input']
+      inputValues['edit-title-input'],
+      inputValues['edit-subtitle-input']
     );
   }
 });
@@ -58,13 +56,11 @@ editPopupInstance.setEventListeners();
 
 const addPopupInstance = new PopupWithForm ({
   popupSelector: '.popup_type_add',
-  handleFormSubmit: (inputValue) => {
-    const card = createCardInstance({
-      link: inputValue['add-url-input'],
-      name: inputValue['add-title-input']
-    });
-    const cardElement = card.createElement();
-    cardList.addItem(cardElement, 'prepend');
+  handleFormSubmit: (inputValues) => {
+    cardList.addItem(createCardInstance({
+      link: inputValues['add-url-input'],
+      name: inputValues['add-title-input']
+    }), 'prepend');
   }
 });
 addPopupInstance.setEventListeners();

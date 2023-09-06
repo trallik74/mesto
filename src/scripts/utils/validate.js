@@ -1,5 +1,5 @@
 import {validationConfig} from "./constants.js";
-import FormValidator from "./FormValidator.js";
+import FormValidator from "../components/FormValidator.js";
 
 const formsList = Array.from(document.querySelectorAll(validationConfig.formSelector));
 const validators = {};

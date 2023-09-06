@@ -24,19 +24,19 @@ export default class Card {
     return cardElement;
   }
 
-  _initToggleLike() {
+  _toggleLike() {
     this._buttonLike.classList.toggle('element__like-button_active');
   }
 
-  _initDeleteElement() {
+  _deleteElement() {
     this._article.remove();
-    this._article = null;
+    this._article, this._buttonLike, this._buttonRemoveCard, this._image, this._title  = null;
   }
 
   _setEventListeners() {
     this._article.addEventListener('click', (evt) => {
       if (evt.target === this._buttonLike) {
-        this._initToggleLike();
+        this._toggleLike();
       }
 
       if (evt.target === this._image) {
@@ -44,7 +44,7 @@ export default class Card {
       }
 
       if (evt.target === this._buttonRemoveCard) {
-        this._initDeleteElement();
+        this._deleteElement();
       }
     });
   }

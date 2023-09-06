@@ -5,12 +5,10 @@ export default class UserInfo {
   }
 
   getUserInfo() {
-    this._userTextContent = {
+    return {
       title: this._profileTitle.textContent,
       subtitle: this._profileSubtitle.textContent
     }
-
-    return this._userTextContent
   }
 
   setUserInfo(title, subtitle) {
