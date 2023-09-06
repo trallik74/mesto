@@ -1,10 +1,10 @@
-import '../pages/index.css'
-import Card from "./Card.js";
-import Section from "./Section.js";
-import PopupWithImage from "./PopupWithImage.js";
-import PopupWithForm from "./PopupWithForm.js";
-import UserInfo from "./UserInfo.js";
-import {enableValidation, validators} from "./validate.js";
+import './index.css';
+import Card from "../components/Card.js";
+import Section from "../components/Section.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import UserInfo from "../components/UserInfo.js";
+import {enableValidation, validators} from "../components/validate.js";
 import {
   initialCards,
   profileEditButton,
@@ -15,7 +15,7 @@ import {
   editSubtitleInput,
   sectionSelector,
   templateSelector
-} from "./constants.js";
+} from "../components/constants.js";
 
 const createCardInstance = ({link, name}) => {
   return new Card({
