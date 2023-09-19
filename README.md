@@ -10,6 +10,7 @@ Mesto это одностраничный, адаптивный фото-бло�
 * JS (Es6 Modules)
 * ООП
 * Webpack
+* API
 * Файловая структура БЭМ Nested
 
 Ссылка на проект [https://trallik74.github.io/mesto/](https://trallik74.github.io/mesto/)

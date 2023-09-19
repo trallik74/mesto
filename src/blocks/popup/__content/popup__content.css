@@ -1,0 +1,5 @@
+.popup__content {
+  margin-top: 38px;
+  display: flex;
+  flex-direction: column;
+}
