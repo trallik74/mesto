@@ -38,7 +38,6 @@ const createCardInstance = ({link, name, owner, likes, _id}, id) => {
           console.log('При удаление карточки произошла ошибка ' + error);
         })
         .then((res) => {
-          console.log(res);
           if (res) {
             cardInstance.deleteElement();
             confirmPopupInstance.close();
