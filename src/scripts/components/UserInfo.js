@@ -7,8 +7,8 @@ export default class UserInfo {
 
   getUserInfo() {
     return {
-      title: this._profileTitle.textContent,
-      subtitle: this._profileSubtitle.textContent
+      'edit-title-input': this._profileTitle.textContent,
+      'edit-subtitle-input': this._profileSubtitle.textContent
     }
   }
 

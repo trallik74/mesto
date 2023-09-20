@@ -14,17 +14,18 @@ import {
   addFormElement,
   editFormElement,
   avatarFormElement,
-  editTitleInput,
-  editSubtitleInput,
   sectionSelector,
   templateSelector,
   optionsApi
 } from "../scripts/utils/constants.js";
 
+let userId;
+let cardsArray;
+
 const api = new Api(optionsApi);
 
 const createCardInstance = ({link, name, owner, likes, _id}, id) => {
-  const CardInstance = new Card({
+  const cardInstance = new Card({
     data: {link, name, owner, likes, _id},
     handleCardClick: (image) => {
       imgPopupInstance.open(image)
@@ -33,18 +34,28 @@ const createCardInstance = ({link, name, owner, likes, _id}, id) => {
       confirmPopupInstance.open();
       confirmPopupInstance.addConfirmHendler(() => {
         api.deleteCard(id)
-        .then(() => {
-          CardInstance.deleteElement();
-        })
         .catch(error => {
           console.log('При удаление карточки произошла ошибка ' + error);
         })
+        .then((res) => {
+          console.log(res);
+          if (res) {
+            cardInstance.deleteElement();
+            confirmPopupInstance.close();
+          } else {
+            throw new Error()
+          }
+        })
+        .catch(error => {
+          alert('При удаление карточки произошла ошибка');
+        })
+        .finally(() => confirmPopupInstance.renderLoading(false))
       })
     },
     handleLikeCard: (id) => {
       api.likeCard(id)
       .then (res => {
-        CardInstance.updateLikeState(res.likes)
+        cardInstance.updateLikeState(res.likes)
       })
       .catch(error => {
         console.log('При лайке карточки произошла ошибка ' + error);
@@ -53,7 +64,7 @@ const createCardInstance = ({link, name, owner, likes, _id}, id) => {
     handleRemoveLikeFromCard: (id) => {
       api.removeLikeFromCard(id)
       .then (res => {
-        CardInstance.updateLikeState(res.likes)
+        cardInstance.updateLikeState(res.likes)
       })
       .catch(error => {
         console.log('При удаление лайка с карточки произошла ошибка ' + error);
@@ -61,7 +72,7 @@ const createCardInstance = ({link, name, owner, likes, _id}, id) => {
     }
     }, id, templateSelector);
 
-    return CardInstance.createElement()
+    return cardInstance.createElement()
 }
 
 const confirmPopupInstance = new PopupWithConfirmation('.popup_type_confirm')
@@ -73,15 +84,33 @@ const userInfoInstance = new UserInfo({
   avatarSelector: '.profile__avatar'
 });
 
-let userId = await api.getUserInfo()
-.then( userInfo => {
-  userInfoInstance.setUserInfo(userInfo);
-  return userInfo._id;
-})
+try {
+  userId = await api.getUserInfo()
+  .then( userInfo => {
+   userInfoInstance.setUserInfo(userInfo);
+   return userInfo._id;
+ })
+} catch(error) {
+  userId = null;
+  console.log('При загрузке пользоваетля произошла ошибка ' + error)
 
+  userInfoInstance.setUserInfo({
+    name: 'unknown',
+    about: 'unknown',
+    avatar: 'https://pictures.s3.yandex.net/frontend-developer/common/ava.jpg',
+    _id: null
+  })
+}
+
+try {
+  cardsArray = await api.getAllCards()
+} catch (error) {
+  console.log('При загрузке карточек произошла ошибка ' + error);
+  cardsArray = []
+}
 
 const cardList = new Section({
-  items: await api.getAllCards(),
+  items: cardsArray,
   renderer: (item) => {
     cardList.addItem(createCardInstance(item, userId), 'append');
     }
@@ -99,9 +128,13 @@ const editPopupInstance = new PopupWithForm ({
       name: inputValues['edit-title-input'],
       about: inputValues['edit-subtitle-input']
     })
+    .catch(error => {
+      console.log('При обновление информации о пользователе произошла ошибка ' + error);
+    })
     .then(userData => {
       userInfoInstance.setUserInfo(userData);
     })
+    .then(() => editPopupInstance.close())
     .catch(error => alert('При обновление информации о пользователе произошла ошибка'))
     .finally(() => editPopupInstance.renderLoading(false))
   }
@@ -115,9 +148,13 @@ const addPopupInstance = new PopupWithForm ({
       link: inputValues['add-url-input'],
       name: inputValues['add-title-input']
     })
+    .catch(error => {
+      console.log('При добавление карточки произошла ошибка ' + error);
+    })
     .then(cardData => {
       cardList.addItem(createCardInstance(cardData, userId), 'prepend');
     })
+    .then(() => addPopupInstance.close())
     .catch(error => alert('При добавление карточки произошла ошибка'))
     .finally(() => addPopupInstance.renderLoading(false))
   }
@@ -128,9 +165,13 @@ const changeAvatarPopupInstance = new PopupWithForm({
   popupSelector: '.popup_type_avatar-change',
   handleFormSubmit: (inputValues) => {
     api.changeAvatar(inputValues['avatar-url-input'])
+    .catch(error => {
+      console.log('При обновление аватара произошла ошибка ' + error);
+    })
     .then(userData => {
       userInfoInstance.setUserInfo(userData);
     })
+    .then(() => changeAvatarPopupInstance.close())
     .catch(error => alert('При обновление аватара произошла ошибка'))
     .finally(() => changeAvatarPopupInstance.renderLoading(false))
   }
@@ -149,9 +190,7 @@ elementAddButton.addEventListener('click', () => {
 
 profileEditButton.addEventListener('click', () => {
   validators[editFormElement.getAttribute('name')].disableForm();
-  const {title, subtitle} = userInfoInstance.getUserInfo();
-  editTitleInput.value = title;
-  editSubtitleInput.value = subtitle;
+  editPopupInstance.setInputValues(userInfoInstance.getUserInfo())
   editPopupInstance.open();
 });
 

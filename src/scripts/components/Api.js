@@ -20,29 +20,12 @@ export default class Api {
       method: 'GET',
       headers: this._header
     })
-    .catch(error => {
-      console.log('При загрузке карточки произошла ошибка ' + error);
-
-      return []
-    })
-
-
   }
 
   getUserInfo() {
     return this._sendRequest(`${this._url}/users/me`, {
       method: 'GET',
       headers: this._header
-    })
-    .catch(error => {
-      console.log('При загрузке пользоваетля произошла ошибка ' + error);
-
-      return {
-        name: 'unknown',
-        about: 'unknown',
-        avatar: 'https://pictures.s3.yandex.net/frontend-developer/common/ava.jpg',
-        _id: null
-      }
     })
   }
 
@@ -52,9 +35,6 @@ export default class Api {
       headers: this._header,
       body: JSON.stringify({name, about})
     })
-    .catch(error => {
-      console.log('При обновление информации о пользователе произошла ошибка ' + error);
-    })
   }
 
   createCard({name, link}) {
@@ -62,9 +42,6 @@ export default class Api {
       method: 'POST',
       headers: this._header,
       body: JSON.stringify({name, link})
-    })
-    .catch(error => {
-      console.log('При добавление карточки произошла ошибка ' + error);
     })
   }
 
@@ -94,9 +71,6 @@ export default class Api {
       method: 'PATCH',
       headers: this._header,
       body: JSON.stringify({avatar})
-    })
-    .catch(error => {
-      console.log('При обновление аватара произошла ошибка ' + error);
     })
   }
 }

@@ -16,8 +16,6 @@ export const pofileChangeAvatar = document.querySelector('.profile__edit-avatar'
 export const addFormElement = addPopup.querySelector('.popup__form');
 export const editFormElement = editPopup.querySelector('.popup__form');
 export const avatarFormElement = editAvatarPopup.querySelector('.popup__form');
-export const editTitleInput = editFormElement.querySelector('.popup__input_type_title');
-export const editSubtitleInput = editFormElement.querySelector('.popup__input_type_subtitle');
 export const sectionSelector = '.elements';
 export const templateSelector = '#element-item-template';
 
